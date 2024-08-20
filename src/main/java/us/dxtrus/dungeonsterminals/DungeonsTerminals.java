@@ -5,8 +5,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import us.dxtrus.commons.command.BukkitCommandManager;
 import us.dxtrus.dungeonsterminals.commands.TerminalsCommand;
+import us.dxtrus.dungeonsterminals.data.CacheManager;
+import us.dxtrus.dungeonsterminals.data.DatabaseManager;
 import us.dxtrus.dungeonsterminals.hook.TerminalTrigger;
 import us.dxtrus.dungeonsterminals.listener.TerminalsListener;
+import us.dxtrus.dungeonsterminals.models.Terminal;
 
 import java.util.Random;
 
@@ -26,6 +29,8 @@ public final class DungeonsTerminals extends JavaPlugin {
         MythicDungeons.inst().registerTrigger(TerminalTrigger.class);
         Bukkit.getPluginManager().registerEvents(new TerminalsListener(this), this);
         BukkitCommandManager.getInstance().registerCommand(new TerminalsCommand(this));
+
+        DatabaseManager.getInstance().getAll(Terminal.class).thenAccept(CacheManager.getInstance()::update);
     }
 
     @Override

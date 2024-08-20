@@ -1,6 +1,8 @@
 package us.dxtrus.dungeonsterminals.models;
 
-public class Terminal {
+import us.dxtrus.commons.database.DatabaseObject;
+
+public class Terminal implements DatabaseObject {
     private final String id;
     private final TerminalType type;
     private final String associatedDungeon;

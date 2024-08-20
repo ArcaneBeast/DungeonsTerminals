@@ -30,6 +30,11 @@ public class LocRef {
     }
 
     @Override
+    public String toString() {
+        return "X %s, Y %s, Z %s".formatted(x, y, z);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (!(o instanceof LocRef otherLoc)) return false;
         return otherLoc.getX() == this.getX() && otherLoc.getY() == this.getY() && otherLoc.getZ() == this.getZ();

@@ -1,7 +1,6 @@
 package us.dxtrus.dungeonsterminals.hook;
 
 import net.playavalon.mythicdungeons.MythicDungeons;
-import net.playavalon.mythicdungeons.api.annotations.DeclaredTrigger;
 import net.playavalon.mythicdungeons.api.annotations.SavedField;
 import net.playavalon.mythicdungeons.api.parents.DungeonTrigger;
 import net.playavalon.mythicdungeons.api.parents.TriggerCategory;
@@ -13,7 +12,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import us.dxtrus.dungeonsterminals.api.TerminalCompleteEvent;
 
-@DeclaredTrigger
 public final class TerminalTrigger extends DungeonTrigger {
     @SavedField
     private String terminalId;
@@ -64,5 +62,13 @@ public final class TerminalTrigger extends DungeonTrigger {
                 TerminalTrigger.this.setDisplayName(TerminalTrigger.this.terminalId + " Terminal Complete");
             }
         });
+    }
+
+    public void setTerminalId(String terminalId) {
+        this.terminalId = terminalId;
+    }
+
+    public String getTerminalId() {
+        return terminalId;
     }
 }

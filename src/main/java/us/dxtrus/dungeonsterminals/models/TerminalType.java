@@ -21,4 +21,12 @@ public enum TerminalType {
     public int getGuiSize() {
         return guiSize;
     }
+
+    public static TerminalType fromString(String str) {
+        try {
+            return valueOf(str.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
 }
