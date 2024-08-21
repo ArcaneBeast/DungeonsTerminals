@@ -1,4 +1,4 @@
-package us.dxtrus.dungeonsterminals.data.persistant;
+package us.dxtrus.dungeonsterminals.data.persistent;
 
 public enum DatabaseType {
     YAML("YAML")

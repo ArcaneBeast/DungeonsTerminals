@@ -1,4 +1,4 @@
-package us.dxtrus.dungeonsterminals.data.persistant;
+package us.dxtrus.dungeonsterminals.data.persistent;
 
 import net.playavalon.mythicdungeons.MythicDungeons;
 import org.apache.commons.lang3.NotImplementedException;
@@ -6,7 +6,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import us.dxtrus.commons.database.DatabaseHandler;
 import us.dxtrus.commons.database.DatabaseObject;
 import us.dxtrus.commons.database.dao.Dao;
-import us.dxtrus.dungeonsterminals.data.persistant.daos.TerminalDao;
+import us.dxtrus.dungeonsterminals.data.persistent.daos.TerminalDao;
 import us.dxtrus.dungeonsterminals.models.Terminal;
 
 import java.io.File;
