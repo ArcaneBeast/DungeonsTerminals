@@ -28,6 +28,7 @@ public class TerminalsListener implements Listener {
     public void onBlockClick(PlayerInteractEvent e) {
         CooldownReponse cdR = Cooldown.localFromClass(TerminalsListener.class, e.getPlayer().getUniqueId(), 5L).execute();
         if (!cdR.shouldContinue()) return;
+
         Block block = e.getClickedBlock();
         if (block == null) return;
         MythicPlayer player = MythicDungeons.inst().getMythicPlayer(e.getPlayer());
