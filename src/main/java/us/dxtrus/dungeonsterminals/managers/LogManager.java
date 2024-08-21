@@ -1,11 +1,11 @@
-package us.dxtrus.dungeonsterminals;
+package us.dxtrus.dungeonsterminals.managers;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class LogManager {
+public final class LogManager {
     private LogManager() {
         throw new IllegalStateException("Cannot create instance of UtilityClass");
     }

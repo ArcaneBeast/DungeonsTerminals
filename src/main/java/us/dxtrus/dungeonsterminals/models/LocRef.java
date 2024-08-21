@@ -1,32 +1,37 @@
 package us.dxtrus.dungeonsterminals.models;
 
 import org.bukkit.Location;
+import org.bukkit.World;
 
 public class LocRef {
-    private final int x;
-    private final int y;
-    private final int z;
+    private final double x;
+    private final double y;
+    private final double z;
 
-    public LocRef(int x, int y, int z) {
+    public LocRef(double x, double y, double z) {
         this.x = x;
         this.y = y;
         this.z = z;
     }
 
     public static LocRef fromLocation(Location location) {
-        return new LocRef(location.getBlockX(), location.getBlockY(), location.getBlockZ());
+        return new LocRef(location.getBlockX() + 0.5, location.getBlockY() + 0.5, location.getBlockZ() + 0.5);
     }
 
-    public int getX() {
+    public double getX() {
         return x;
     }
 
-    public int getY() {
+    public double getY() {
         return y;
     }
 
-    public int getZ() {
+    public double getZ() {
         return z;
+    }
+
+    public Location toBukkit(World world) {
+        return new Location(world, x, y, z);
     }
 
     @Override
@@ -38,5 +43,10 @@ public class LocRef {
     public boolean equals(Object o) {
         if (!(o instanceof LocRef otherLoc)) return false;
         return otherLoc.getX() == this.getX() && otherLoc.getY() == this.getY() && otherLoc.getZ() == this.getZ();
+    }
+
+    @Override
+    public int hashCode() {
+        return Double.hashCode(x) + Double.hashCode(y) + Double.hashCode(z);
     }
 }

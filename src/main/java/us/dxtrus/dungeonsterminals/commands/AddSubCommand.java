@@ -68,6 +68,11 @@ public class AddSubCommand extends BasicSubCommand {
 
         LocRef loc = LocRef.fromLocation(targetBlock.getLocation());
 
+        if (CacheManager.getInstance().get(loc).isPresent()) {
+            commandUser.sendMessage(StringUtils.modernMessage("&cThere is already a terminal at this location!"));
+            return;
+        }
+
         Terminal terminal = new Terminal(id, type, dungeon, loc);
         CacheManager.getInstance().cache(terminal);
         DatabaseManager.getInstance().save(Terminal.class, terminal)

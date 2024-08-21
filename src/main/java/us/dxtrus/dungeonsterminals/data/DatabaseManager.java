@@ -2,7 +2,7 @@ package us.dxtrus.dungeonsterminals.data;
 
 import us.dxtrus.commons.database.DatabaseHandler;
 import us.dxtrus.commons.database.DatabaseObject;
-import us.dxtrus.dungeonsterminals.LogManager;
+import us.dxtrus.dungeonsterminals.managers.LogManager;
 import us.dxtrus.dungeonsterminals.data.persistent.DatabaseType;
 import us.dxtrus.dungeonsterminals.data.persistent.YamlHandler;
 

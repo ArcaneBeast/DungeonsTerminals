@@ -22,6 +22,18 @@ public final class CacheManager {
         return Optional.ofNullable(terminalCache.get(LocRef.fromLocation(location)));
     }
 
+    public Optional<Terminal> get(LocRef location) {
+        return Optional.ofNullable(terminalCache.get(location));
+    }
+
+    public Optional<Terminal> get(String id) {
+        return terminalCache.values().stream().filter(terminal -> terminal.getId().equals(id)).findFirst();
+    }
+
+    public void invalidate(Terminal terminal) {
+        terminalCache.remove(terminal.getLocation());
+    }
+
     public List<String> getAllIds() {
         return terminalCache.values().stream().map(Terminal::getId).toList();
     }

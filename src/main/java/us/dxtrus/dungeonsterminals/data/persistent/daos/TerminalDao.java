@@ -43,7 +43,7 @@ public class TerminalDao implements Dao<Terminal> {
         if (dungeon == null) {
             throw new RuntimeException("Terminal %s dungeon is not set.".formatted(id));
         }
-        LocRef loc = new LocRef(conf.getInt("x"), conf.getInt("y"), conf.getInt("z"));
+        LocRef loc = new LocRef(conf.getDouble("x"), conf.getDouble("y"), conf.getDouble("z"));
         return Optional.of(new Terminal(id, type, dungeon, loc));
     }
 
