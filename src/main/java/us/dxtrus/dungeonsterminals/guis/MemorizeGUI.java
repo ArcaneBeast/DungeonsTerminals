@@ -6,10 +6,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import us.dxtrus.commons.utils.StringUtils;
-import us.dxtrus.commons.utils.TaskManager;
 import us.dxtrus.dungeonsterminals.DungeonsTerminals;
 import us.dxtrus.dungeonsterminals.api.TerminalCompleteEvent;
 import us.dxtrus.dungeonsterminals.models.Terminal;
@@ -26,15 +24,10 @@ public class MemorizeGUI extends TerminalGUI {
     private final List<Material> correctItems = new ArrayList<>();
     private final Map<Material, Boolean> guessed = new HashMap<>();
 
-    private final Player player;
-    private final Terminal terminal;
-
     private final BukkitTask startGuessing;
 
     public MemorizeGUI(Player player, Terminal terminal, JavaPlugin plugin) {
-        super(TerminalType.MEMORIZE);
-        this.player = player;
-        this.terminal = terminal;
+        super(terminal, player);
 
         chooseRandomItems();
         showRandomItems();
