@@ -1,9 +1,13 @@
 package us.dxtrus.dungeonsterminals.guis;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 import us.dxtrus.commons.utils.StringUtils;
 import us.dxtrus.commons.utils.TaskManager;
 import us.dxtrus.dungeonsterminals.DungeonsTerminals;
@@ -25,6 +29,8 @@ public class MemorizeGUI extends TerminalGUI {
     private final Player player;
     private final Terminal terminal;
 
+    private final BukkitTask startGuessing;
+
     public MemorizeGUI(Player player, Terminal terminal, JavaPlugin plugin) {
         super(TerminalType.MEMORIZE);
         this.player = player;
@@ -32,15 +38,22 @@ public class MemorizeGUI extends TerminalGUI {
 
         chooseRandomItems();
         showRandomItems();
-        TaskManager.runSyncDelayed(plugin, this::startGuessing, 20L * PREVIEW_SECONDS);
+        startGuessing = Bukkit.getScheduler().runTaskLater(plugin, this::startGuessing, 20L * PREVIEW_SECONDS);
+    }
+
+    @Override
+    public void onClose(InventoryCloseEvent e) {
+        if (startGuessing != null) {
+            startGuessing.cancel();
+        }
     }
 
     private void chooseRandomItems() {
         for (int i = 0; i < 3; i++) {
             Material[] materials = Material.values();
             Material material = materials[DungeonsTerminals.getRandom().nextInt(materials.length)];
-            if (correctItems.contains(material)) {
-                i--;
+            if (correctItems.contains(material) || material.isAir() || material == Material.ALLAY_SPAWN_EGG || material.isItem()) {
+                --i;
                 continue;
             }
             correctItems.add(material);
@@ -48,12 +61,16 @@ public class MemorizeGUI extends TerminalGUI {
     }
 
     private Material randomMaterialNotInCorrect() {
-        Material[] materials = Material.values();
-        for (Material material : materials) {
-            if (correctItems.contains(material)) continue;
+        for (int i = 0; i < 2; i++) {
+            Material[] materials = Material.values();
+            Material material = materials[DungeonsTerminals.getRandom().nextInt(materials.length)];
+            if (correctItems.contains(material) || material.isAir() || material.isItem()) {
+                --i;
+                continue;
+            }
             return material;
         }
-        return Material.ACACIA_BOAT;
+        return Material.ALLAY_SPAWN_EGG;
     }
 
     private void showRandomItems() {
@@ -74,24 +91,45 @@ public class MemorizeGUI extends TerminalGUI {
     }
 
     private void showGuessOptions() {
-        for (int i = 0; i < TerminalType.MEMORIZE.getGuiSize()-1; i++) {
-            if (DungeonsTerminals.getRandom().nextBoolean()) {
-                Material mat = correctItems.remove(0);
-                setItem(i, new ItemStack(mat), e -> {
-                    guessed.put(mat, true);
-                    removeItem(e.getSlot());
-                    if (guessed.size() == 3) {
-                        completeTerminal();
-                    }
-                });
-                continue;
+        int firstSlot = DungeonsTerminals.getRandom().nextInt(TerminalType.MEMORIZE.getGuiSize()-1);
+        int secondSlot = DungeonsTerminals.getRandom().nextInt(TerminalType.MEMORIZE.getGuiSize()-1);
+        int thirdSlot = DungeonsTerminals.getRandom().nextInt(TerminalType.MEMORIZE.getGuiSize()-1);
+
+        Material matOne = correctItems.remove(0);
+        setItem(firstSlot, new ItemStack(matOne), e -> {
+            guessed.put(matOne, true);
+            removeItem(e.getSlot());
+            if (guessed.size() == 3) {
+                completeTerminal();
             }
-            setItem(i, new ItemStack(randomMaterialNotInCorrect()));
+        });
+
+        Material matTwo = correctItems.remove(0);
+        setItem(secondSlot, new ItemStack(matTwo), e -> {
+            guessed.put(matTwo, true);
+            removeItem(e.getSlot());
+            if (guessed.size() == 3) {
+                completeTerminal();
+            }
+        });
+
+        Material matThree = correctItems.remove(0);
+        setItem(thirdSlot, new ItemStack(matThree), e -> {
+            guessed.put(matThree, true);
+            removeItem(e.getSlot());
+            if (guessed.size() == 3) {
+                completeTerminal();
+            }
+        });
+
+        for (int i = 0; i < TerminalType.MEMORIZE.getGuiSize()-4; i++) {
+            addItem(new ItemStack(randomMaterialNotInCorrect()));
         }
     }
 
     @Override
     protected void completeTerminal() {
+        getInventory().close();
         player.sendMessage(StringUtils.modernMessage("&aTerminal Complete!"));
         new TerminalCompleteEvent(player, terminal).callEvent();
     }

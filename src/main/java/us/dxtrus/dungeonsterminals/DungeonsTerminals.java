@@ -5,6 +5,8 @@ import net.playavalon.mythicdungeons.utility.GUIHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import us.dxtrus.commons.command.BukkitCommandManager;
+import us.dxtrus.commons.gui.FastInv;
+import us.dxtrus.commons.gui.FastInvManager;
 import us.dxtrus.dungeonsterminals.commands.TerminalsCommand;
 import us.dxtrus.dungeonsterminals.data.CacheManager;
 import us.dxtrus.dungeonsterminals.data.DatabaseManager;
@@ -31,6 +33,7 @@ public final class DungeonsTerminals extends JavaPlugin {
 //        MythicDungeons.inst().registerTrigger(TerminalTrigger.class);
 //        GUIHandler.initTriggerMenu();
 
+        FastInvManager.register(this);
         Bukkit.getPluginManager().registerEvents(new TerminalsListener(this), this);
         BukkitCommandManager.getInstance().registerCommand(new TerminalsCommand(this));
 
