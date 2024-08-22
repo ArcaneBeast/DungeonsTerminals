@@ -1,16 +1,13 @@
 package us.dxtrus.dungeonsterminals;
 
-import net.playavalon.mythicdungeons.MythicDungeons;
-import net.playavalon.mythicdungeons.utility.GUIHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import us.dxtrus.commons.command.BukkitCommandManager;
-import us.dxtrus.commons.gui.FastInv;
 import us.dxtrus.commons.gui.FastInvManager;
+import us.dxtrus.commons.holograms.HologramManager;
 import us.dxtrus.dungeonsterminals.commands.TerminalsCommand;
 import us.dxtrus.dungeonsterminals.data.CacheManager;
 import us.dxtrus.dungeonsterminals.data.DatabaseManager;
-import us.dxtrus.dungeonsterminals.hook.TerminalTrigger;
 import us.dxtrus.dungeonsterminals.listener.TerminalsListener;
 import us.dxtrus.dungeonsterminals.managers.EditParticlesThread;
 import us.dxtrus.dungeonsterminals.models.Terminal;
@@ -18,10 +15,13 @@ import us.dxtrus.dungeonsterminals.models.Terminal;
 import java.util.Random;
 
 public final class DungeonsTerminals extends JavaPlugin {
-    private static final Random random = new Random(System.currentTimeMillis());
+    private final Random random = new Random(System.currentTimeMillis());
+    private static DungeonsTerminals instance;
+    private final HologramManager hologramManager = new HologramManager(this, "");
 
     @Override
     public void onEnable() {
+        instance = this;
         try {
             Class.forName("net.playavalon.mythicdungeons.MythicDungeons");
         } catch (ClassNotFoundException e) {
@@ -44,12 +44,15 @@ public final class DungeonsTerminals extends JavaPlugin {
         new EditParticlesThread().runTaskTimerAsynchronously(this, 0L, 10L);
     }
 
-    @Override
-    public void onDisable() {
-
+    public HologramManager getHologramManager() {
+        return hologramManager;
     }
 
-    public static Random getRandom() {
+    public Random getRandom() {
         return random;
+    }
+
+    public static DungeonsTerminals getInstance() {
+        return instance;
     }
 }

@@ -25,10 +25,9 @@ public final class EditParticlesThread extends BukkitRunnable {
                 Optional<Terminal> terminal = CacheManager.getInstance().get(terminalId);
                 if (terminal.isEmpty()) continue;
                 Location location = terminal.get().getLocation().toBukkit(mythicPlayer.getInstance().getInstanceWorld());
-                if (!(location.distance(player.getLocation()) > 15.0)) {
-                    player.spawnParticle(Particle.REDSTONE, location, 12, 0.25, 0.25, 0.25, dustOptions);
-                    player.spawnParticle(Particle.END_ROD, location, 1, 0.25, 0.25, 0.25, 0.01);
-                }
+                if (location.distance(player.getLocation()) > 15.0) continue;
+                player.spawnParticle(Particle.REDSTONE, location, 12, 0.25, 0.25, 0.25, dustOptions);
+                player.spawnParticle(Particle.END_ROD, location, 1, 0.25, 0.25, 0.25, 0.01);
             }
         }
     }

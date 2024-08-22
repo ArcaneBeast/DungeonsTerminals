@@ -21,7 +21,7 @@ repositories {
 
 dependencies {
     compileOnly "io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT"
-    compileOnly "us.dxtrus.commons:bukkit:2.1.4"
+    compileOnly "us.dxtrus.commons:bukkit:2.1.5"
     compileOnly files("$rootDir/.libs/MythicDungeons-1.4.1-SNAPSHOT.jar")
 }
 

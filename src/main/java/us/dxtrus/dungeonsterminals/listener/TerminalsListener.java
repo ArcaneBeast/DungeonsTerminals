@@ -16,6 +16,7 @@ import us.dxtrus.commons.cooldowns.CooldownReponse;
 import us.dxtrus.dungeonsterminals.api.TerminalCompleteEvent;
 import us.dxtrus.dungeonsterminals.data.CacheManager;
 import us.dxtrus.dungeonsterminals.guis.MemorizeGUI;
+import us.dxtrus.dungeonsterminals.guis.SwitchGUI;
 
 public class TerminalsListener implements Listener {
     private final JavaPlugin plugin;
@@ -36,7 +37,8 @@ public class TerminalsListener implements Listener {
         CacheManager.getInstance().get(block.getLocation()).ifPresent(terminal -> {
             if (!player.getInstance().getDungeon().getFolder().getName().equals(terminal.getAssociatedDungeon())) return;
             switch (terminal.getType()) {
-                case MEMORIZE -> new MemorizeGUI(player.getPlayer(), terminal, plugin).open(player.getPlayer());
+                case MEMORIZE -> new MemorizeGUI(terminal, player.getPlayer(), plugin).open(player.getPlayer());
+                case SWITCHES -> new SwitchGUI(terminal, player.getPlayer(), plugin).open(player.getPlayer());
                 default -> throw new NotImplementedException();
             }
         });
