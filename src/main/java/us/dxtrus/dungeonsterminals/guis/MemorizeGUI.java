@@ -110,7 +110,7 @@ public class MemorizeGUI extends TerminalGUI {
         return e -> {
             incorrectGuesses++;
             setItem(e.getSlot(), new ItemStack(Material.RED_STAINED_GLASS_PANE));
-            tasks.add(Bukkit.getScheduler().runTaskLater(plugin, () -> setItem(e.getSlot(), itemStack, guess(itemStack)), 15L));
+            tasks.add(Bukkit.getScheduler().runTaskLater(plugin, () -> setItem(e.getSlot(), itemStack, incorrect(itemStack)), 15L));
             if (incorrectGuesses == 3) {
                 failTerminal();
             }
