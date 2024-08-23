@@ -3,6 +3,7 @@ package us.dxtrus.dungeonsterminals.guis;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -15,28 +16,28 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class MemorizeGUI extends TerminalGUI {
     private static final int PREVIEW_SECONDS = 3;
 
+    private final JavaPlugin plugin;
     private final List<Material> correctItems = new ArrayList<>();
     private final Map<Material, Boolean> guessed = new HashMap<>();
-
-    private final BukkitTask startGuessing;
+    private final List<BukkitTask> tasks = new ArrayList<>();
+    private int incorrectGuesses = 0;
 
     public MemorizeGUI(Terminal terminal, Player player, JavaPlugin plugin) {
         super(terminal, player);
-
+        this.plugin = plugin;
         chooseRandomItems();
         showRandomItems();
-        startGuessing = Bukkit.getScheduler().runTaskLater(plugin, this::startGuessing, 20L * PREVIEW_SECONDS);
+        tasks.add(Bukkit.getScheduler().runTaskLater(plugin, this::startGuessing, 20L * PREVIEW_SECONDS));
     }
 
     @Override
     public void onClose(InventoryCloseEvent e) {
-        if (startGuessing != null) {
-            startGuessing.cancel();
-        }
+        tasks.forEach(BukkitTask::cancel);
     }
 
     private void chooseRandomItems() {
@@ -100,10 +101,20 @@ public class MemorizeGUI extends TerminalGUI {
         setCorrectItem(thirdSlot);
 
         for (int i = 0; i < TerminalType.MEMORIZE.getGuiSize()-3; i++) {
-            addItem(new ItemStack(randomMaterialNotInCorrect()), e -> {
-
-            });
+            ItemStack itemStack = new ItemStack(randomMaterialNotInCorrect());
+            addItem(itemStack, incorrect(itemStack));
         }
+    }
+
+    private Consumer<InventoryClickEvent> incorrect(ItemStack itemStack) {
+        return e -> {
+            incorrectGuesses++;
+            setItem(e.getSlot(), new ItemStack(Material.RED_STAINED_GLASS_PANE));
+            tasks.add(Bukkit.getScheduler().runTaskLater(plugin, () -> setItem(e.getSlot(), itemStack, guess(itemStack)), 15L));
+            if (incorrectGuesses == 3) {
+                failTerminal();
+            }
+        };
     }
 
     private void setCorrectItem(int firstSlot) {

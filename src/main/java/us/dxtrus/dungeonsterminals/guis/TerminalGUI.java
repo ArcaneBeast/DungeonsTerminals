@@ -21,4 +21,10 @@ public abstract class TerminalGUI extends FastInv {
         player.sendMessage(StringUtils.modernMessage("&aTerminal Complete!"));
         new TerminalCompleteEvent(player, terminal).callEvent();
     }
+
+
+    protected void failTerminal() {
+        getInventory().close();
+        player.sendMessage(StringUtils.modernMessage("&cTerminal Failed!"));
+    }
 }
