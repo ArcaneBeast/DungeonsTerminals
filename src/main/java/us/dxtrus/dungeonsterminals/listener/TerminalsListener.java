@@ -5,7 +5,6 @@ import net.playavalon.mythicdungeons.api.events.dungeon.RemoteTriggerEvent;
 import net.playavalon.mythicdungeons.dungeons.triggers.TriggerRemote;
 import net.playavalon.mythicdungeons.player.MythicPlayer;
 import org.apache.commons.lang3.NotImplementedException;
-import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -61,5 +60,8 @@ public class TerminalsListener implements Listener {
         TriggerRemote remoteTrig = new TriggerRemote();
         remoteTrig.setTriggerName(event.getTerminal().getId());
         new RemoteTriggerEvent(remoteTrig.getTriggerName(), remoteTrig, mythicPlayer.getInstance()).callEvent();
+//        TerminalTrigger terminalTrigger = new TerminalTrigger();
+//        terminalTrigger.setTerminalId(event.getTerminal().getId());
+//        terminalTrigger.trigger(mythicPlayer);
     }
 }
