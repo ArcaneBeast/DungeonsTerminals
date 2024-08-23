@@ -1,6 +1,7 @@
 package us.dxtrus.dungeonsterminals.guis;
 
 import org.bukkit.entity.Player;
+import us.dxtrus.commons.cooldowns.Cooldown;
 import us.dxtrus.commons.gui.FastInv;
 import us.dxtrus.commons.utils.StringUtils;
 import us.dxtrus.dungeonsterminals.api.TerminalCompleteEvent;
@@ -26,5 +27,6 @@ public abstract class TerminalGUI extends FastInv {
     protected void failTerminal() {
         getInventory().close();
         player.sendMessage(StringUtils.modernMessage("&cTerminal Failed!"));
+        Cooldown.local("terminal_fail", player.getUniqueId(), 600L).start();
     }
 }

@@ -13,6 +13,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import us.dxtrus.commons.cooldowns.Cooldown;
 import us.dxtrus.commons.cooldowns.CooldownReponse;
+import us.dxtrus.commons.utils.StringUtils;
 import us.dxtrus.dungeonsterminals.api.TerminalCompleteEvent;
 import us.dxtrus.dungeonsterminals.data.CacheManager;
 import us.dxtrus.dungeonsterminals.guis.MemorizeGUI;
@@ -36,6 +37,12 @@ public class TerminalsListener implements Listener {
         if (player.getInstance() == null || !player.getInstance().isStarted()) return;
         CacheManager.getInstance().get(block.getLocation()).ifPresent(terminal -> {
             if (!player.getInstance().getDungeon().getFolder().getName().equals(terminal.getAssociatedDungeon())) return;
+            Cooldown cd = Cooldown.local("terminal_fail", player.getPlayer().getUniqueId(), 600L);
+            if (cd.isActive()) {
+                player.getPlayer().sendMessage(StringUtils.modernMessage("&cTerminal on cooldown! &7(Wait: %s seconds)"
+                        .formatted(cd.remainingTime() / 1000D)));
+                return;
+            }
             switch (terminal.getType()) {
                 case MEMORIZE -> new MemorizeGUI(terminal, player.getPlayer(), plugin).open(player.getPlayer());
                 case SWITCHES -> new SwitchGUI(terminal, player.getPlayer(), plugin).open(player.getPlayer());
