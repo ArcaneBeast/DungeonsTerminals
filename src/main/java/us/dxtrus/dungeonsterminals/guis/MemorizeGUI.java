@@ -6,7 +6,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 import us.dxtrus.dungeonsterminals.DungeonsTerminals;
 import us.dxtrus.dungeonsterminals.models.Terminal;
@@ -21,13 +20,13 @@ import java.util.function.Consumer;
 public class MemorizeGUI extends TerminalGUI {
     private static final int PREVIEW_SECONDS = 3;
 
-    private final JavaPlugin plugin;
+    private final DungeonsTerminals plugin;
     private final List<Material> correctItems = new ArrayList<>();
     private final Map<Material, Boolean> guessed = new HashMap<>();
     private final List<BukkitTask> tasks = new ArrayList<>();
     private int incorrectGuesses = 0;
 
-    public MemorizeGUI(Terminal terminal, Player player, JavaPlugin plugin) {
+    public MemorizeGUI(Terminal terminal, Player player, DungeonsTerminals plugin) {
         super(terminal, player);
         this.plugin = plugin;
         chooseRandomItems();
@@ -43,7 +42,7 @@ public class MemorizeGUI extends TerminalGUI {
     private void chooseRandomItems() {
         for (int i = 0; i < 3; i++) {
             Material[] materials = Material.values();
-            Material material = materials[DungeonsTerminals.getInstance().getRandom().nextInt(materials.length)];
+            Material material = materials[plugin.getRandom().nextInt(materials.length)];
             if (correctItems.contains(material) || material.isAir() || material == Material.ALLAY_SPAWN_EGG || !material.isItem()) {
                 --i;
                 continue;
@@ -55,7 +54,7 @@ public class MemorizeGUI extends TerminalGUI {
     private Material randomMaterialNotInCorrect() {
         for (int i = 0; i < 2; i++) {
             Material[] materials = Material.values();
-            Material material = materials[DungeonsTerminals.getInstance().getRandom().nextInt(materials.length)];
+            Material material = materials[plugin.getRandom().nextInt(materials.length)];
             if (correctItems.contains(material) || material.isAir() || !material.isItem()) {
                 --i;
                 continue;
@@ -84,16 +83,16 @@ public class MemorizeGUI extends TerminalGUI {
 
     private void showGuessOptions() {
         int guiSize = TerminalType.MEMORIZE.getGuiSize() - 1;
-        int firstSlot = DungeonsTerminals.getInstance().getRandom().nextInt(guiSize);
+        int firstSlot = plugin.getRandom().nextInt(guiSize);
         int secondSlot;
         int thirdSlot;
 
         do {
-            secondSlot = DungeonsTerminals.getInstance().getRandom().nextInt(guiSize);
+            secondSlot = plugin.getRandom().nextInt(guiSize);
         } while (secondSlot == firstSlot);
 
         do {
-            thirdSlot = DungeonsTerminals.getInstance().getRandom().nextInt(guiSize);
+            thirdSlot = plugin.getRandom().nextInt(guiSize);
         } while (thirdSlot == firstSlot || thirdSlot == secondSlot);
 
         setCorrectItem(firstSlot);
@@ -118,7 +117,7 @@ public class MemorizeGUI extends TerminalGUI {
     }
 
     private void setCorrectItem(int firstSlot) {
-        Material material = correctItems.remove(0);
+        Material material = correctItems.removeFirst();
         setItem(firstSlot, new ItemStack(material), e -> {
             guessed.put(material, true);
             setItem(e.getSlot(), new ItemStack(Material.LIME_STAINED_GLASS_PANE));

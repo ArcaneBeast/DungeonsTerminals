@@ -2,17 +2,18 @@ package us.dxtrus.dungeonsterminals.hook;
 
 import net.playavalon.mythicdungeons.MythicDungeons;
 import net.playavalon.mythicdungeons.api.annotations.SavedField;
-import net.playavalon.mythicdungeons.api.parents.DungeonTrigger;
 import net.playavalon.mythicdungeons.api.parents.TriggerCategory;
+import net.playavalon.mythicdungeons.api.parents.elements.DungeonTrigger;
 import net.playavalon.mythicdungeons.menu.MenuButton;
 import net.playavalon.mythicdungeons.menu.menuitems.ChatMenuItem;
-import net.playavalon.mythicdungeons.utility.Util;
+import net.playavalon.mythicdungeons.utility.helpers.Util;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import us.dxtrus.dungeonsterminals.api.TerminalCompleteEvent;
 
-public final class TerminalTrigger extends DungeonTrigger {
+public final class TerminalTrigger extends DungeonTrigger implements Listener {
     @SavedField
     private String terminalId;
 

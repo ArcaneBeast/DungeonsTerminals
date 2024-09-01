@@ -42,7 +42,7 @@ public class AddSubCommand extends BasicSubCommand {
 
         MythicPlayer mythicPlayer = MythicDungeons.inst().getMythicPlayer(player);
 
-        if (mythicPlayer.getInstance() == null || !mythicPlayer.getInstance().isEditMode()) {
+        if (mythicPlayer.getInstance() == null || !mythicPlayer.getInstance().isEditInstance()) {
             commandUser.sendMessage(StringUtils.modernMessage("&cYou must be editing a dungeon!"));
             return;
         }

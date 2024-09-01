@@ -22,10 +22,10 @@ repositories {
 dependencies {
     compileOnly "io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT"
     compileOnly "us.dxtrus.commons:bukkit:2.1.5"
-    compileOnly files("$rootDir/.libs/MythicDungeons-1.4.1-SNAPSHOT.jar")
+    compileOnly files("$rootDir/.libs/MythicDungeons-2.0.0-SNAPSHOT.jar")
 }
 
-def targetJavaVersion = 17
+def targetJavaVersion = 21
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
     sourceCompatibility = javaVersion

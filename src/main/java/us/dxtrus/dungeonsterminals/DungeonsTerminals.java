@@ -17,11 +17,12 @@ import java.util.Random;
 public final class DungeonsTerminals extends JavaPlugin {
     private final Random random = new Random(System.currentTimeMillis());
     private static DungeonsTerminals instance;
-    private final HologramManager hologramManager = new HologramManager(this, "");
+    private HologramManager hologramManager;
 
     @Override
     public void onEnable() {
         instance = this;
+        hologramManager = new HologramManager(this, "holograms.yml");
         try {
             Class.forName("net.playavalon.mythicdungeons.MythicDungeons");
         } catch (ClassNotFoundException e) {
@@ -50,6 +51,11 @@ public final class DungeonsTerminals extends JavaPlugin {
 
     public Random getRandom() {
         return random;
+    }
+
+    public boolean getRandomBoolean(double percentage) {
+        double randomDouble = random.nextDouble();
+        return randomDouble < (percentage / 100);
     }
 
     public static DungeonsTerminals getInstance() {

@@ -13,7 +13,6 @@ import us.dxtrus.dungeonsterminals.data.CacheManager;
 import us.dxtrus.dungeonsterminals.data.DatabaseManager;
 import us.dxtrus.dungeonsterminals.models.LocRef;
 import us.dxtrus.dungeonsterminals.models.Terminal;
-import us.dxtrus.dungeonsterminals.models.TerminalType;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,7 +34,7 @@ public class RemoveSubCommand extends BasicSubCommand {
     }
 
     private void handleWithLocation(MythicPlayer mythicPlayer) {
-        if (!mythicPlayer.getInstance().isEditMode()) {
+        if (!mythicPlayer.getInstance().isEditInstance()) {
             mythicPlayer.getPlayer().sendMessage(StringUtils.modernMessage("&cYou must be editing a dungeon!"));
             return;
         }
@@ -65,7 +64,7 @@ public class RemoveSubCommand extends BasicSubCommand {
     }
 
     private void handleWithId(MythicPlayer mythicPlayer, String terminalId) {
-        if (!mythicPlayer.getInstance().isEditMode()) {
+        if (!mythicPlayer.getInstance().isEditInstance()) {
             mythicPlayer.getPlayer().sendMessage(StringUtils.modernMessage("&cYou must be editing a dungeon!"));
             return;
         }

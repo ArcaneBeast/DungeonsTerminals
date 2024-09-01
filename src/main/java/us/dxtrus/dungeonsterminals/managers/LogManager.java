@@ -10,7 +10,7 @@ public final class LogManager {
         throw new IllegalStateException("Cannot create instance of UtilityClass");
     }
 
-    private static final Logger logger = Logger.getLogger("API-Backend");
+    private static final Logger logger = Logger.getLogger("DungeonsTerminals");
 
     public static void info(@NotNull String message) {
         logger.log(Level.INFO, message);
