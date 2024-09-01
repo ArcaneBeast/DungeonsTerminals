@@ -1,7 +1,9 @@
 package us.dxtrus.dungeonsterminals.models;
 
+import lombok.Getter;
 import us.dxtrus.commons.database.DatabaseObject;
 
+@Getter
 public class Terminal implements DatabaseObject {
     private final String id;
     private final TerminalType type;
@@ -15,19 +17,4 @@ public class Terminal implements DatabaseObject {
         this.location = location;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public TerminalType getType() {
-        return type;
-    }
-
-    public String getAssociatedDungeon() {
-        return associatedDungeon;
-    }
-
-    public LocRef getLocation() {
-        return location;
-    }
 }

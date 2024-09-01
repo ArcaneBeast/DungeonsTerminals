@@ -8,6 +8,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 import us.dxtrus.dungeonsterminals.DungeonsTerminals;
+import us.dxtrus.dungeonsterminals.config.Config;
 import us.dxtrus.dungeonsterminals.models.Terminal;
 import us.dxtrus.dungeonsterminals.models.TerminalType;
 
@@ -18,7 +19,6 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 public class MemorizeGUI extends TerminalGUI {
-    private static final int PREVIEW_SECONDS = 3;
 
     private final DungeonsTerminals plugin;
     private final List<Material> correctItems = new ArrayList<>();
@@ -31,7 +31,7 @@ public class MemorizeGUI extends TerminalGUI {
         this.plugin = plugin;
         chooseRandomItems();
         showRandomItems();
-        tasks.add(Bukkit.getScheduler().runTaskLater(plugin, this::startGuessing, 20L * PREVIEW_SECONDS));
+        tasks.add(Bukkit.getScheduler().runTaskLater(plugin, this::startGuessing, 20L * Config.getInstance().getTerminals().getMemorize().getPreviewSeconds()));
     }
 
     @Override

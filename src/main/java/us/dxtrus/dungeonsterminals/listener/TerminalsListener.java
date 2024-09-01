@@ -14,6 +14,7 @@ import us.dxtrus.commons.cooldowns.CooldownReponse;
 import us.dxtrus.commons.utils.StringUtils;
 import us.dxtrus.dungeonsterminals.DungeonsTerminals;
 import us.dxtrus.dungeonsterminals.api.TerminalCompleteEvent;
+import us.dxtrus.dungeonsterminals.config.Config;
 import us.dxtrus.dungeonsterminals.data.CacheManager;
 import us.dxtrus.dungeonsterminals.guis.MemorizeGUI;
 import us.dxtrus.dungeonsterminals.guis.SwitchGUI;
@@ -27,7 +28,7 @@ public class TerminalsListener implements Listener {
 
     @EventHandler
     public void onBlockClick(PlayerInteractEvent e) {
-        CooldownReponse cdR = Cooldown.localFromClass(TerminalsListener.class, e.getPlayer().getUniqueId(), 5L).execute();
+        CooldownReponse cdR = Cooldown.localFromClass(TerminalsListener.class, e.getPlayer().getUniqueId(), 100L).execute();
         if (!cdR.shouldContinue()) return;
 
         Block block = e.getClickedBlock();
@@ -36,9 +37,9 @@ public class TerminalsListener implements Listener {
         if (player.getInstance() == null || !player.getInstance().isPlayInstance() || !player.getInstance().asPlayInstance().isStarted()) return;
         CacheManager.getInstance().get(block.getLocation()).ifPresent(terminal -> {
             if (!player.getInstance().getDungeon().getFolder().getName().equals(terminal.getAssociatedDungeon())) return;
-            Cooldown cd = Cooldown.local("terminal_fail", player.getPlayer().getUniqueId(), 600L);
-            if (cd.isActive()) {
-                player.getPlayer().sendMessage(StringUtils.modernMessage("&cTerminal on cooldown! &7(Wait: %s seconds)"
+            Cooldown cd = DungeonsTerminals.failCooldowns.get(player.getPlayer().getUniqueId());
+            if (cd != null && cd.isActive()) {
+                player.getPlayer().sendMessage(StringUtils.modernMessage(Config.getInstance().getCooldownMessage()
                         .formatted(cd.remainingTime() / 1000D)));
                 return;
             }

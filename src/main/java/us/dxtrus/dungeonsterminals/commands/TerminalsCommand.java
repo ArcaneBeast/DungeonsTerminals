@@ -5,6 +5,7 @@ import us.dxtrus.commons.command.BukkitCommand;
 import us.dxtrus.commons.command.Command;
 import us.dxtrus.commons.command.user.CommandUser;
 import us.dxtrus.commons.utils.StringUtils;
+import us.dxtrus.dungeonsterminals.config.Config;
 
 public class TerminalsCommand extends BukkitCommand {
     @Command(name = "terminals", permission = "terminals.admin")
@@ -18,10 +19,10 @@ public class TerminalsCommand extends BukkitCommand {
     public void execute(CommandUser commandUser, String[] strings) {
         if (strings.length >= 1) {
             if (subCommandExecutor(commandUser, strings)) return;
-            commandUser.sendMessage(StringUtils.modernMessage("&cUsage: &f/terminals <add|remove>"));
+            commandUser.sendMessage(StringUtils.modernMessage(Config.getInstance().getCommands().getInvalidUsageMain()));
             return;
         }
 
-        commandUser.sendMessage(StringUtils.modernMessage("&cUsage: &f/terminals <add|remove>"));
+        commandUser.sendMessage(StringUtils.modernMessage(Config.getInstance().getCommands().getInvalidUsageMain()));
     }
 }

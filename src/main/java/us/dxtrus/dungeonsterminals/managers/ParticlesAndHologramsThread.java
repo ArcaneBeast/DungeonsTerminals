@@ -13,17 +13,19 @@ import us.dxtrus.dungeonsterminals.models.Terminal;
 
 import java.util.Optional;
 
-public final class EditParticlesThread extends BukkitRunnable {
+public final class ParticlesAndHologramsThread extends BukkitRunnable {
     @Override
     public void run() {
         for (Player player : Bukkit.getOnlinePlayers()) {
             MythicPlayer mythicPlayer = MythicDungeons.inst().getMythicPlayer(player);
             if (mythicPlayer == null) continue;
-            if (!mythicPlayer.isEditMode()) continue;
             Particle.DustOptions dustOptions = new Particle.DustOptions(Color.GREEN, 1.0F);
+
             for (String terminalId : CacheManager.getInstance().getAllIds()) {
                 Optional<Terminal> terminal = CacheManager.getInstance().get(terminalId);
                 if (terminal.isEmpty()) continue;
+                if (mythicPlayer.getInstance() == null || !mythicPlayer.getInstance().isEditInstance()) continue;
+
                 Location location = terminal.get().getLocation().toBukkit(mythicPlayer.getInstance().getInstanceWorld());
                 if (location.distance(player.getLocation()) > 15.0) continue;
                 player.spawnParticle(Particle.REDSTONE, location, 12, 0.25, 0.25, 0.25, dustOptions);

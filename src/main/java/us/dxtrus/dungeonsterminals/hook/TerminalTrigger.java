@@ -1,5 +1,7 @@
 package us.dxtrus.dungeonsterminals.hook;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.playavalon.mythicdungeons.MythicDungeons;
 import net.playavalon.mythicdungeons.api.annotations.SavedField;
 import net.playavalon.mythicdungeons.api.parents.TriggerCategory;
@@ -13,6 +15,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import us.dxtrus.dungeonsterminals.api.TerminalCompleteEvent;
 
+@Setter
+@Getter
 public final class TerminalTrigger extends DungeonTrigger implements Listener {
     @SavedField
     private String terminalId;
@@ -65,11 +69,4 @@ public final class TerminalTrigger extends DungeonTrigger implements Listener {
         });
     }
 
-    public void setTerminalId(String terminalId) {
-        this.terminalId = terminalId;
-    }
-
-    public String getTerminalId() {
-        return terminalId;
-    }
 }

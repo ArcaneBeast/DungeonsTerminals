@@ -1,17 +1,12 @@
 package us.dxtrus.dungeonsterminals.data.persistent;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public enum DatabaseType {
-    YAML("YAML")
-    ;
+    YAML("YAML");
 
     private final String friendlyName;
-
-
-    DatabaseType(String friendlyName) {
-        this.friendlyName = friendlyName;
-    }
-
-    public String getFriendlyName() {
-        return friendlyName;
-    }
 }

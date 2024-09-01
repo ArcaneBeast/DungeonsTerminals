@@ -10,31 +10,36 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 import us.dxtrus.commons.gui.ItemBuilder;
 import us.dxtrus.dungeonsterminals.DungeonsTerminals;
+import us.dxtrus.dungeonsterminals.config.Config;
 import us.dxtrus.dungeonsterminals.models.Terminal;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 public class SwitchGUI extends TerminalGUI {
+    private final BukkitTask timer;
+    private final Config.Terminals.Switches conf;
     private boolean firstSwitch;
     private boolean secondSwitch;
     private boolean thirdSwitch;
-    private boolean fourthSwitch;
+    private boolean forthSwitch;
     private boolean fifthSwitch;
-
-    private final BukkitTask timer;
 
     public SwitchGUI(Terminal terminal, Player player, DungeonsTerminals plugin) {
         super(terminal, player);
 
-        firstSwitch = plugin.getRandomBoolean(20);
-        secondSwitch = plugin.getRandomBoolean(35);
-        thirdSwitch = plugin.getRandomBoolean(50);
-        fourthSwitch = plugin.getRandomBoolean(15);
-        fifthSwitch = plugin.getRandomBoolean(40);
+        this.conf = Config.getInstance().getTerminals().getSwitches();
 
-        timer = Bukkit.getScheduler().runTaskLater(plugin, this::failTerminal, 60L);
+        firstSwitch = plugin.getRandomBoolean(conf.getChances().getFirst());
+        secondSwitch = plugin.getRandomBoolean(conf.getChances().getSecond());
+        thirdSwitch = plugin.getRandomBoolean(conf.getChances().getThird());
+        forthSwitch = plugin.getRandomBoolean(conf.getChances().getForth());
+        fifthSwitch = plugin.getRandomBoolean(conf.getChances().getFifth());
 
         displaySwitches();
+
+        timer = Bukkit.getScheduler().runTaskLater(plugin, this::failTerminal, 20L * conf.getTimeAllowed());
     }
 
     @Override
@@ -46,20 +51,32 @@ public class SwitchGUI extends TerminalGUI {
         setItem(11, firstSwitch ? onItem() : offItem(), firstSwitch ? onConsumer() : offConsumer());
         setItem(12, secondSwitch ? onItem() : offItem(), secondSwitch ? onConsumer() : offConsumer());
         setItem(13, thirdSwitch ? onItem() : offItem(), thirdSwitch ? onConsumer() : offConsumer());
-        setItem(14, fourthSwitch ? onItem() : offItem(), fourthSwitch ? onConsumer() : offConsumer());
+        setItem(14, forthSwitch ? onItem() : offItem(), forthSwitch ? onConsumer() : offConsumer());
         setItem(15, fifthSwitch ? onItem() : offItem(), fifthSwitch ? onConsumer() : offConsumer());
     }
 
     private boolean isAllOn() {
-        return firstSwitch && secondSwitch && thirdSwitch && fourthSwitch && fifthSwitch;
+        return firstSwitch && secondSwitch && thirdSwitch && forthSwitch && fifthSwitch;
     }
 
     private ItemStack onItem() {
-        return new ItemBuilder(Material.LIME_STAINED_GLASS_PANE).name(Util.colorize("&a&lON")).lore(Util.colorize("&7Click to turn off")).build();
+        List<String> colorful = new ArrayList<>();
+        for (String str : conf.getOnButton().getLore()) {
+            colorful.add(Util.colorize(str));
+        }
+        return new ItemBuilder(Material.LIME_STAINED_GLASS_PANE)
+                .name(Util.colorize(conf.getOnButton().getName()))
+                .lore(colorful).build();
     }
 
     private ItemStack offItem() {
-        return new ItemBuilder(Material.RED_STAINED_GLASS_PANE).name(Util.colorize("&c&lOFF")).lore(Util.colorize("&7Click to turn on")).build();
+        List<String> colorful = new ArrayList<>();
+        for (String str : conf.getOffButton().getLore()) {
+            colorful.add(Util.colorize(str));
+        }
+        return new ItemBuilder(Material.RED_STAINED_GLASS_PANE)
+                .name(Util.colorize(conf.getOffButton().getName()))
+                .lore(colorful).build();
     }
 
     private Consumer<InventoryClickEvent> onConsumer() {
@@ -78,7 +95,7 @@ public class SwitchGUI extends TerminalGUI {
                     break;
                 }
                 case 14: {
-                    fourthSwitch = false;
+                    forthSwitch = false;
                     break;
                 }
                 case 15: {
@@ -106,7 +123,7 @@ public class SwitchGUI extends TerminalGUI {
                     break;
                 }
                 case 14: {
-                    fourthSwitch = true;
+                    forthSwitch = true;
                     break;
                 }
                 case 15: {

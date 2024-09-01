@@ -1,8 +1,10 @@
 package us.dxtrus.dungeonsterminals.models;
 
+import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.World;
 
+@Getter
 public class LocRef {
     private final double x;
     private final double y;
@@ -16,18 +18,6 @@ public class LocRef {
 
     public static LocRef fromLocation(Location location) {
         return new LocRef(location.getBlockX() + 0.5, location.getBlockY() + 0.5, location.getBlockZ() + 0.5);
-    }
-
-    public double getX() {
-        return x;
-    }
-
-    public double getY() {
-        return y;
-    }
-
-    public double getZ() {
-        return z;
     }
 
     public Location toBukkit(World world) {

@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import us.dxtrus.commons.cooldowns.Cooldown;
 import us.dxtrus.commons.gui.FastInv;
 import us.dxtrus.commons.utils.StringUtils;
+import us.dxtrus.dungeonsterminals.DungeonsTerminals;
 import us.dxtrus.dungeonsterminals.api.TerminalCompleteEvent;
 import us.dxtrus.dungeonsterminals.models.Terminal;
 
@@ -12,7 +13,7 @@ public abstract class TerminalGUI extends FastInv {
     protected final Terminal terminal;
 
     public TerminalGUI(Terminal terminal, Player player) {
-        super(terminal.getType().getGuiSize(), terminal.getType().getFriendlyName());
+        super(terminal.getType().getGuiSize(), terminal.getType().getTitle());
         this.player = player;
         this.terminal = terminal;
     }
@@ -27,6 +28,8 @@ public abstract class TerminalGUI extends FastInv {
     protected void failTerminal() {
         getInventory().close();
         player.sendMessage(StringUtils.modernMessage("&cTerminal Failed!"));
-        Cooldown.local("terminal_fail", player.getUniqueId(), 600L).start();
+        Cooldown cd = Cooldown.local("terminal_fail", player.getUniqueId(), 6000L);
+        DungeonsTerminals.failCooldowns.put(player.getUniqueId(), cd);
+        cd.start();
     }
 }

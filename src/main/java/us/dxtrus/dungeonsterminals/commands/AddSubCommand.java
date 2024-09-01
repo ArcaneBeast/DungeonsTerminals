@@ -9,6 +9,7 @@ import us.dxtrus.commons.command.Command;
 import us.dxtrus.commons.command.user.BukkitUser;
 import us.dxtrus.commons.command.user.CommandUser;
 import us.dxtrus.commons.utils.StringUtils;
+import us.dxtrus.dungeonsterminals.config.Config;
 import us.dxtrus.dungeonsterminals.data.CacheManager;
 import us.dxtrus.dungeonsterminals.data.DatabaseManager;
 import us.dxtrus.dungeonsterminals.models.LocRef;
@@ -27,8 +28,9 @@ public class AddSubCommand extends BasicSubCommand {
     @Override
     public void execute(CommandUser commandUser, String[] strings) {
         Player player = ((BukkitUser) commandUser).getAudience();
+        Config.Commands conf = Config.getInstance().getCommands();
         if (strings.length < 2) {
-            commandUser.sendMessage(StringUtils.modernMessage("&cUsage: /terminals add <id> <type>"));
+            commandUser.sendMessage(StringUtils.modernMessage(conf.getInvalidUsageAdd()));
             return;
         }
 
@@ -36,14 +38,14 @@ public class AddSubCommand extends BasicSubCommand {
         TerminalType type = TerminalType.fromString(strings[1]);
 
         if (type == null) {
-            commandUser.sendMessage(StringUtils.modernMessage("&cInvalid Type!"));
+            commandUser.sendMessage(StringUtils.modernMessage(conf.getInvalidType()));
             return;
         }
 
         MythicPlayer mythicPlayer = MythicDungeons.inst().getMythicPlayer(player);
 
         if (mythicPlayer.getInstance() == null || !mythicPlayer.getInstance().isEditInstance()) {
-            commandUser.sendMessage(StringUtils.modernMessage("&cYou must be editing a dungeon!"));
+            commandUser.sendMessage(StringUtils.modernMessage(conf.getMustBeEditing()));
             return;
         }
 
@@ -52,32 +54,27 @@ public class AddSubCommand extends BasicSubCommand {
         Block targetBlock = player.getTargetBlockExact(5);
 
         if (targetBlock == null) {
-            commandUser.sendMessage(StringUtils.modernMessage("&cYou must be looking at a block!"));
+            commandUser.sendMessage(StringUtils.modernMessage(conf.getMustBeLookingAtBlock()));
             return;
         }
 
         if (CacheManager.getInstance().get(targetBlock.getLocation()).isPresent()) {
-            commandUser.sendMessage(StringUtils.modernMessage("&cThere is already a terminal at this location!"));
+            commandUser.sendMessage(StringUtils.modernMessage(conf.getTerminalExistsAtThisLoc()));
             return;
         }
 
         if (CacheManager.getInstance().getAllIds().contains(id)) {
-            commandUser.sendMessage(StringUtils.modernMessage("&cThere is already a terminal with this ID!"));
+            commandUser.sendMessage(StringUtils.modernMessage(conf.getTerminalExistsWithThisId()));
             return;
         }
 
         LocRef loc = LocRef.fromLocation(targetBlock.getLocation());
 
-        if (CacheManager.getInstance().get(loc).isPresent()) {
-            commandUser.sendMessage(StringUtils.modernMessage("&cThere is already a terminal at this location!"));
-            return;
-        }
-
         Terminal terminal = new Terminal(id, type, dungeon, loc);
         CacheManager.getInstance().cache(terminal);
         DatabaseManager.getInstance().save(Terminal.class, terminal)
-                .thenRun(() -> commandUser.sendMessage(StringUtils.modernMessage("&aCreated %s terminal at %s in dungeon %s"
-                        .formatted(type.getFriendlyName(), loc.toString(), dungeon))));
+                .thenRun(() -> commandUser.sendMessage(StringUtils.modernMessage(conf.getTerminalCreated()
+                        .formatted(type.getName(), loc.toString(), dungeon))));
     }
 
     @Override
