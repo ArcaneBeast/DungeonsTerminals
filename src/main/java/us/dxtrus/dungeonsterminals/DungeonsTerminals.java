@@ -8,6 +8,7 @@ import us.dxtrus.commons.command.BukkitCommandManager;
 import us.dxtrus.commons.cooldowns.Cooldown;
 import us.dxtrus.commons.gui.FastInvManager;
 import us.dxtrus.dungeonsterminals.commands.TerminalsCommand;
+import us.dxtrus.dungeonsterminals.config.Config;
 import us.dxtrus.dungeonsterminals.data.CacheManager;
 import us.dxtrus.dungeonsterminals.data.DatabaseManager;
 import us.dxtrus.dungeonsterminals.hook.Metrics;
@@ -47,6 +48,7 @@ public final class DungeonsTerminals extends JavaPlugin {
         BukkitCommandManager.getInstance().registerCommand(new TerminalsCommand(this));
 
         CacheManager.getInstance(); // init
+        Config.getInstance(); // init
         DatabaseManager.getInstance(); // init
         DatabaseManager.getInstance().getAll(Terminal.class).thenAccept(CacheManager.getInstance()::update);
 
