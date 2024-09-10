@@ -1,6 +1,7 @@
 package us.dxtrus.dungeonsterminals;
 
 import lombok.Getter;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import us.dxtrus.commons.command.BukkitCommandManager;
@@ -23,11 +24,13 @@ public final class DungeonsTerminals extends JavaPlugin {
     public static final Map<UUID, Cooldown> failCooldowns = new ConcurrentHashMap<>();
     @Getter private static DungeonsTerminals instance;
     @Getter private final Random random = new Random(System.currentTimeMillis());
+    @Getter private BukkitAudiences audiences;
     private Metrics metrics;
 
     @Override
     public void onEnable() {
         instance = this;
+        audiences = BukkitAudiences.create(this);
         try {
             Class.forName("net.playavalon.mythicdungeons.MythicDungeons");
         } catch (ClassNotFoundException e) {

@@ -27,7 +27,7 @@ public class AddSubCommand extends BasicSubCommand {
 
     @Override
     public void execute(CommandUser commandUser, String[] strings) {
-        Player player = ((BukkitUser) commandUser).getAudience();
+        Player player = ((BukkitUser) commandUser).getPlayer();
         Config.Commands conf = Config.getInstance().getCommands();
         if (strings.length < 2) {
             commandUser.sendMessage(StringUtils.modernMessage(conf.getInvalidUsageAdd()));

@@ -1,7 +1,7 @@
 package us.dxtrus.dungeonsterminals.data.persistent;
 
 import net.playavalon.mythicdungeons.MythicDungeons;
-import org.apache.commons.lang3.NotImplementedException;
+import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import us.dxtrus.commons.database.DatabaseHandler;
 import us.dxtrus.commons.database.DatabaseObject;

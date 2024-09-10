@@ -4,7 +4,8 @@ import net.playavalon.mythicdungeons.MythicDungeons;
 import net.playavalon.mythicdungeons.api.events.dungeon.RemoteTriggerEvent;
 import net.playavalon.mythicdungeons.dungeons.triggers.TriggerRemote;
 import net.playavalon.mythicdungeons.player.MythicPlayer;
-import org.apache.commons.lang3.NotImplementedException;
+import org.apache.commons.lang.NotImplementedException;
+import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -39,7 +40,7 @@ public class TerminalsListener implements Listener {
             if (!player.getInstance().getDungeon().getFolder().getName().equals(terminal.getAssociatedDungeon())) return;
             Cooldown cd = DungeonsTerminals.failCooldowns.get(player.getPlayer().getUniqueId());
             if (cd != null && cd.isActive()) {
-                player.getPlayer().sendMessage(StringUtils.modernMessage(Config.getInstance().getCooldownMessage()
+                player.getPlayer().sendMessage(StringUtils.legacyMessage(Config.getInstance().getCooldownMessage()
                         .formatted(cd.remainingTime() / 1000D)));
                 return;
             }
@@ -61,7 +62,8 @@ public class TerminalsListener implements Listener {
 
         TriggerRemote remoteTrig = new TriggerRemote();
         remoteTrig.setTriggerName(event.getTerminal().getId());
-        new RemoteTriggerEvent(remoteTrig.getTriggerName(), remoteTrig, mythicPlayer.getInstance().asPlayInstance()).callEvent();
+        RemoteTriggerEvent e = new RemoteTriggerEvent(remoteTrig.getTriggerName(), remoteTrig, mythicPlayer.getInstance().asPlayInstance());
+        Bukkit.getPluginManager().callEvent(e);
 //        TerminalTrigger terminalTrigger = new TerminalTrigger();
 //        terminalTrigger.setTerminalId(event.getTerminal().getId());
 //        terminalTrigger.trigger(mythicPlayer);

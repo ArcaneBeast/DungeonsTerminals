@@ -26,7 +26,7 @@ public class RemoveSubCommand extends BasicSubCommand {
 
     @Override
     public void execute(CommandUser commandUser, String[] strings) {
-        Player player = ((BukkitUser) commandUser).getAudience();
+        Player player = ((BukkitUser) commandUser).getPlayer();
         if (strings.length >= 1) {
             handleWithId(MythicDungeons.inst().getMythicPlayer(player), strings[0]);
             return;
@@ -37,7 +37,7 @@ public class RemoveSubCommand extends BasicSubCommand {
     private void handleWithLocation(MythicPlayer mythicPlayer) {
         Config.Commands conf = Config.getInstance().getCommands();
         if (mythicPlayer.getInstance() == null || !mythicPlayer.getInstance().isEditInstance()) {
-            mythicPlayer.getPlayer().sendMessage(StringUtils.modernMessage(conf.getMustBeEditing()));
+            mythicPlayer.getPlayer().sendMessage(StringUtils.legacyMessage(conf.getMustBeEditing()));
             return;
         }
 
@@ -46,7 +46,7 @@ public class RemoveSubCommand extends BasicSubCommand {
         Block targetBlock = mythicPlayer.getPlayer().getTargetBlockExact(5);
 
         if (targetBlock == null) {
-            mythicPlayer.getPlayer().sendMessage(StringUtils.modernMessage(conf.getMustBeLookingAtBlock()));
+            mythicPlayer.getPlayer().sendMessage(StringUtils.legacyMessage(conf.getMustBeLookingAtBlock()));
             return;
         }
 
@@ -55,20 +55,20 @@ public class RemoveSubCommand extends BasicSubCommand {
         Optional<Terminal> possibleTerminal = CacheManager.getInstance().get(loc);
 
         if (possibleTerminal.isEmpty()) {
-            mythicPlayer.getPlayer().sendMessage(StringUtils.modernMessage(conf.getNoTerminalAtLoc()));
+            mythicPlayer.getPlayer().sendMessage(StringUtils.legacyMessage(conf.getNoTerminalAtLoc()));
             return;
         }
 
         CacheManager.getInstance().invalidate(possibleTerminal.get());
         DatabaseManager.getInstance().delete(Terminal.class, possibleTerminal.get())
-                .thenRun(() -> mythicPlayer.getPlayer().sendMessage(StringUtils.modernMessage(conf.getTerminalRemoved()
+                .thenRun(() -> mythicPlayer.getPlayer().sendMessage(StringUtils.legacyToMiniMessage(conf.getTerminalRemoved()
                         .formatted(possibleTerminal.get().getType().getName(), loc.toString(), dungeon))));
     }
 
     private void handleWithId(MythicPlayer mythicPlayer, String terminalId) {
         Config.Commands conf = Config.getInstance().getCommands();
         if (mythicPlayer.getInstance() == null || !mythicPlayer.getInstance().isEditInstance()) {
-            mythicPlayer.getPlayer().sendMessage(StringUtils.modernMessage(conf.getMustBeEditing()));
+            mythicPlayer.getPlayer().sendMessage(StringUtils.legacyMessage(conf.getMustBeEditing()));
             return;
         }
 
@@ -77,13 +77,13 @@ public class RemoveSubCommand extends BasicSubCommand {
         Optional<Terminal> possibleTerminal = CacheManager.getInstance().get(terminalId);
 
         if (possibleTerminal.isEmpty()) {
-            mythicPlayer.getPlayer().sendMessage(StringUtils.modernMessage(conf.getNoTerminalWithId()));
+            mythicPlayer.getPlayer().sendMessage(StringUtils.legacyMessage(conf.getNoTerminalWithId()));
             return;
         }
 
         CacheManager.getInstance().invalidate(possibleTerminal.get());
         DatabaseManager.getInstance().delete(Terminal.class, possibleTerminal.get())
-                .thenRun(() -> mythicPlayer.getPlayer().sendMessage(StringUtils.modernMessage(conf.getTerminalRemoved()
+                .thenRun(() -> mythicPlayer.getPlayer().sendMessage(StringUtils.legacyToMiniMessage(conf.getTerminalRemoved()
                         .formatted(possibleTerminal.get().getType().getName(), possibleTerminal.get().getLocation().toString(), dungeon))));
     }
 

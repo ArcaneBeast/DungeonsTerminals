@@ -43,7 +43,7 @@ public class MemorizeGUI extends TerminalGUI {
         for (int i = 0; i < 3; i++) {
             Material[] materials = Material.values();
             Material material = materials[plugin.getRandom().nextInt(materials.length)];
-            if (correctItems.contains(material) || material.isAir() || material == Material.ALLAY_SPAWN_EGG || !material.isItem()) {
+            if (correctItems.contains(material) || material.isAir() || material == Material.SUGAR_CANE || !material.isItem()) {
                 --i;
                 continue;
             }
@@ -61,7 +61,7 @@ public class MemorizeGUI extends TerminalGUI {
             }
             return material;
         }
-        return Material.ALLAY_SPAWN_EGG;
+        return Material.SUGAR_CANE;
     }
 
     private void showRandomItems() {

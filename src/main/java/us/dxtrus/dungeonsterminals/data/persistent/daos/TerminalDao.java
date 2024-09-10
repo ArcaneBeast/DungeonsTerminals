@@ -1,6 +1,6 @@
 package us.dxtrus.dungeonsterminals.data.persistent.daos;
 
-import org.apache.commons.lang3.NotImplementedException;
+import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import us.dxtrus.commons.database.dao.Dao;

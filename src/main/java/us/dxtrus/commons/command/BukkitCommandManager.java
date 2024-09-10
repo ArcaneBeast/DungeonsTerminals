@@ -1,6 +1,5 @@
 package us.dxtrus.commons.command;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
@@ -27,7 +26,7 @@ public class BukkitCommandManager extends CommandManager {
      */
     @Override
     public void registerCommand(BasicCommand basicCommand) {
-        Bukkit.getServer().getCommandMap().register("dxtrus", new CommandExecutor(basicCommand));
+        CommandMapUtil.getCommandMap().register("dungeonsterminals", new CommandExecutor(basicCommand));
         loadedCommands.add(basicCommand);
         LogManager.info(String.format("Registered Command %s", basicCommand.getInfo().name()));
     }
@@ -75,7 +74,7 @@ public class BukkitCommandManager extends CommandManager {
 
             CommandUser commandUser = sender instanceof Player player
                     ? BukkitUser.wrap(player)
-                    : new ConsoleUser(sender);
+                    : new ConsoleUser(DungeonsTerminals.getInstance().getAudiences().console());
 
             if (this.basicCommand.getInfo().async()) {
                 TaskManager.runAsync(DungeonsTerminals.getInstance(), () -> basicCommand.execute(commandUser, args));
@@ -89,7 +88,7 @@ public class BukkitCommandManager extends CommandManager {
         public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) throws IllegalArgumentException {
             CommandUser commandUser = sender instanceof Player player
                     ? BukkitUser.wrap(player)
-                    : new ConsoleUser(sender);
+                    : new ConsoleUser(DungeonsTerminals.getInstance().getAudiences().console());
 
             // Primary argument
             if (args.length <= 1) {

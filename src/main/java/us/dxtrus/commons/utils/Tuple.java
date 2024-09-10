@@ -28,4 +28,9 @@ public class Tuple<A, B> {
         if (!(o instanceof Tuple<?,?> tuple)) return false;
         return tuple.getA().equals(this.getA()) && tuple.getB().equals(this.getB());
     }
+
+    @Override
+    public int hashCode() {
+        return a.hashCode() + b.hashCode();
+    }
 }

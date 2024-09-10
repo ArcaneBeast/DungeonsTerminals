@@ -3,6 +3,7 @@ package us.dxtrus.commons.utils;
 import lombok.experimental.UtilityClass;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.md_5.bungee.api.ChatColor;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.regex.Matcher;
@@ -13,8 +14,12 @@ import java.util.regex.Pattern;
  */
 @UtilityClass
 public final class StringUtils {
+    private static final Pattern LEGACY_HEX_PATTERN = Pattern.compile("&#[a-fA-F0-9]{6}");
+    private static final Pattern MODERN_HEX_PATTERN = Pattern.compile("<#[a-fA-F0-9]{6}>");
+
     /**
      * Converts legacy colour codes to MiniMessage.
+     *
      * @param message message with legacy codes
      * @return string with mini modernMessage formatting (not colorized)
      */
@@ -42,11 +47,10 @@ public final class StringUtils {
         message = message.replace("&o", "<i>");
         message = message.replace("&r", "<reset>");
 
-        Pattern pattern = Pattern.compile("&#[a-fA-F0-9]{6}");
-        Matcher match = pattern.matcher(message);
+        Matcher match = LEGACY_HEX_PATTERN.matcher(message);
         String code = message;
         while (match.find()) {
-            code = message.substring(match.start(),match.end());
+            code = message.substring(match.start(), match.end());
             code = code.replace("&", "<");
             code = code + ">";
         }
@@ -55,6 +59,7 @@ public final class StringUtils {
 
     /**
      * Converts MiniMessage to legacy colour codes.
+     *
      * @param message message with mini message formatting
      * @return string with legacy formatting (not colorized)
      */
@@ -82,9 +87,7 @@ public final class StringUtils {
         message = message.replace("<i>", "&o");
         message = message.replace("<reset>", "&r");
 
-
-        Pattern pattern = Pattern.compile("<#[a-fA-F0-9]{6}>");
-        Matcher match = pattern.matcher(message);
+        Matcher match = MODERN_HEX_PATTERN.matcher(message);
         String code = message;
         while (match.find()) {
             code = message.substring(match.start(), match.end());
@@ -96,38 +99,29 @@ public final class StringUtils {
 
     /**
      * Takes a string formatted in minimessage OR legacy and turns it into an Adventure Component.
+     *
      * @param message the modernMessage
-     * @param replacements placeholders formatted with {@link StringUtils#formatPlaceholders(String, Object...)}
      * @return colorized component
      */
-    public Component modernMessage(@NotNull String message, Object... replacements) {
-        return MiniMessage.miniMessage().deserialize(formatPlaceholders(legacyToMiniMessage(message), replacements));
+    public Component modernMessage(@NotNull String message) {
+        return MiniMessage.miniMessage().deserialize(legacyToMiniMessage(message));
     }
 
     /**
      * Takes a string formatted in minimessage OR legacy and turns it into a legacy String.
+     *
      * @param message the modernMessage
-     * @param replacements placeholders formatted with {@link StringUtils#formatPlaceholders(String, Object...)}
      * @return colorized component
      */
-    public String legacyMessage(@NotNull String message, Object... replacements) {
-        return miniMessageToLegacy(formatPlaceholders(message, replacements));
-    }
+    public String legacyMessage(@NotNull String message) {
+        message = miniMessageToLegacy(message);
+        Matcher matcher = LEGACY_HEX_PATTERN.matcher(message);
+        StringBuilder buffer = new StringBuilder();
 
-    /**
-     * Formats Strings with placeholders.
-     * @param message modernMessage with placeholders: {index}
-     * @param args things to replace with
-     * @return formatted string
-     */
-    public static String formatPlaceholders(String message, Object... args) {
-        for (int i = 0; i < args.length; i++) {
-            if (!message.contains("{" + i + "}")) {
-                continue;
-            }
-
-            message = message.replace("{" + i + "}", String.valueOf(args[i]));
+        while (matcher.find()) {
+            matcher.appendReplacement(buffer, ChatColor.of("#" + matcher.group(1)).toString());
         }
-        return message;
+
+        return ChatColor.translateAlternateColorCodes('&', matcher.appendTail(buffer).toString());
     }
 }
