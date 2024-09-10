@@ -1,7 +1,7 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/prodpreva1l/dungeonsterminals/badge)](https://www.codefactor.io/repository/github/prodpreva1l/dungeonsterminals)
 ## DungeonsTerminals is an extension to MythicDungeons (2.0.0) to add Hypixel-esque terminals!
 
-- Spigot/Download: https://www.spigotmc.org/resources/fadah-finally-a-decent-auction-house.116157/
+- Spigot/Download: https://www.spigotmc.org/resources/dungeons-terminals.119510/
 - Docs: https://docs.preva1l.info/
 
 ### Features:
