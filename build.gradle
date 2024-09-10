@@ -9,20 +9,12 @@ repositories {
     mavenCentral()
     maven { url "https://repo.papermc.io/repository/maven-public/" }
     maven { url "https://oss.sonatype.org/content/groups/public/" }
-    maven {
-        name "dxtrusReleases"
-        url 'https://maven.asdev.info/releases'
-        credentials(PasswordCredentials)
-        authentication {
-            basic(BasicAuthentication)
-        }
-    }
 }
 
 dependencies {
     compileOnly "io.papermc.paper:paper-api:1.20-R0.1-SNAPSHOT"
-    compileOnly "us.dxtrus.commons:bukkit:2.1.5"
     compileOnly files("$rootDir/.libs/MythicDungeons-2.0.0-SNAPSHOT.jar")
+    implementation("de.exlll:configlib-yaml:4.5.0")
     compileOnly 'org.projectlombok:lombok:1.18.32'
     annotationProcessor 'org.projectlombok:lombok:1.18.32'
 }

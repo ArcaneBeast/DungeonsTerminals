@@ -1,9 +1,10 @@
 package us.dxtrus.dungeonsterminals.config;
 
+import de.exlll.configlib.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import us.dxtrus.commons.config.*;
+import us.dxtrus.commons.config.AutoReload;
 import us.dxtrus.dungeonsterminals.DungeonsTerminals;
 import us.dxtrus.dungeonsterminals.managers.LogManager;
 
@@ -31,8 +32,6 @@ public class Config {
     private long terminalFailCooldown = 6000;
 
     private String cooldownMessage = "&cTerminal on cooldown! &7(Wait: %s seconds)";
-
-    private List<String> hologram = List.of("&aTerminal", "&7%type%");
 
     private Terminals terminals = new Terminals();
 

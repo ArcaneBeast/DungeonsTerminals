@@ -13,7 +13,7 @@ import us.dxtrus.dungeonsterminals.models.Terminal;
 
 import java.util.Optional;
 
-public final class ParticlesAndHologramsThread extends BukkitRunnable {
+public final class ParticlesThread extends BukkitRunnable {
     @Override
     public void run() {
         for (Player player : Bukkit.getOnlinePlayers()) {

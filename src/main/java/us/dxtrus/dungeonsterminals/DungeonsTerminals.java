@@ -11,7 +11,7 @@ import us.dxtrus.dungeonsterminals.data.CacheManager;
 import us.dxtrus.dungeonsterminals.data.DatabaseManager;
 import us.dxtrus.dungeonsterminals.hook.Metrics;
 import us.dxtrus.dungeonsterminals.listener.TerminalsListener;
-import us.dxtrus.dungeonsterminals.managers.ParticlesAndHologramsThread;
+import us.dxtrus.dungeonsterminals.managers.ParticlesThread;
 import us.dxtrus.dungeonsterminals.models.Terminal;
 
 import java.util.Map;
@@ -47,7 +47,7 @@ public final class DungeonsTerminals extends JavaPlugin {
         DatabaseManager.getInstance(); // init
         DatabaseManager.getInstance().getAll(Terminal.class).thenAccept(CacheManager.getInstance()::update);
 
-        new ParticlesAndHologramsThread().runTaskTimerAsynchronously(this, 0L, 10L);
+        new ParticlesThread().runTaskTimerAsynchronously(this, 0L, 10L);
         metrics = new Metrics(this, 23252);
         metrics.addCustomChart(new Metrics.SingleLineChart("active_terminals", () -> CacheManager.getInstance().getAllIds().size()));
     }
