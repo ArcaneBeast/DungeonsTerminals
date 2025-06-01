@@ -1,6 +1,6 @@
 package us.dxtrus.dungeonsterminals.guis;
 
-import net.playavalon.mythicdungeons.utility.helpers.Util;
+import net.playavalon.mythicdungeons.utility.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
